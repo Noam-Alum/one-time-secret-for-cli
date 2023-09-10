@@ -1,9 +1,9 @@
 # One Time Secret for cli
 
 To install on system as an alias:
-* chmod +x $(for x in $(find / -name OTS -type f); do cat $x | grep 'Open a one time secret;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)
-* echo "alias OTS=\"$(for x in $(find / -name OTS -type f); do cat $x | grep 'Open a one time secret;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)\"" >> ~/.bashrc
-* source ~/.bashrc
+* <code>chmod +x $(for x in $(find / -name OTS -type f); do cat $x | grep 'Open a one time secret;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)</code>
+* <code>echo "alias OTS=\"$(for x in $(find / -name OTS -type f); do cat $x | grep 'Open a one time secret;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)\"" >> ~/.bashrc</code>
+* <code>source ~/.bashrc</code>
 
 Usage: OTS [OPTION]... [VALUE]...
 Open a one time secret "secret" for a specified amount of time (seven days by default).
