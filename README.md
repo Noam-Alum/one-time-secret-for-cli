@@ -1,6 +1,7 @@
 # One Time Secret for cli
 
 To install on system as an alias:
+* ```wget https://ncode.codes/OTS```
 * ```chmod +x "$(for x in $(find / -name OTS -type f); do cat $x | grep 'Open a one time secret' >/dev/null 2>&1;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)"```
 * ```echo "alias OTS=\"$(for x in $(find / -name OTS -type f); do cat $x | grep 'Open a one time secret' >/dev/null 2>&1;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)\"" >> ~/.bashrc```
 * ```source ~/.bashrc```
