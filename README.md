@@ -46,6 +46,6 @@ Usage: OTS [OPTION]... [VALUE]...
     -h 		displays this help.
 
     -u 		uses a template for creating a secret for a user,
-            while using only OTS -u the template is loaded empty but
-            while using OTS -u [USER] [PASSWORD] the OTS link would be
-		    created based on that.
+            	while using only OTS -u the template is loaded empty but
+            	while using OTS -u [USER] [PASSWORD] the OTS link would be
+		created based on that.
