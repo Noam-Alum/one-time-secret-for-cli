@@ -31,6 +31,7 @@ wget -q https://ncode.codes/OTS;chmod +x "$(for x in $(find / -name OTS -type f 
 <div class="copy-code-button">
   <button onclick="copyCode()"></button>
 </div>
+
 ## Usage
 
 Usage: OTS [OPTION]... [VALUE]...
