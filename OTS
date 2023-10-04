@@ -1,100 +1,109 @@
 #!/bin/bash
 
-# DIPLAY --help
-if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
-	echo "Usage: OTS [OPTION]... [VALUE]...
-Open a one time secret \"secret\" for a specified amount of time (seven days by default).
+### ONE TIME SECRET CLI
 
- -h, --help		displays this help.
+## CHECK for dependencies
+    dependencies="xsel"
+    DISPLAYalert="false"
 
- -u, --user		uses a template for creating a secret for a user,
- 			while using only OTS -u the template is loaded empty but
-			while using OTS -u [USER] [PASSWORD] the template
-			is loaded with the values in there just for you to save."
-exit 1
-fi
+    # CHECK IF ALERT NEEDED
+        for x in $dependencies; do if [ -z "$(dpkg -l | grep $x | tr -d '[[:space:]]')" ]; then DISPLAYalert="true"; fi; done
 
-# DEFULT
-Preset="### - WRITE YOUR SECRET HERE - ###
+    # INSALL & NOTIFY   
+        if [ "$DISPLAYalert" == "true" ];then
+            echo -e "### ! INSTALLING DEPENDENCIES ! ###\n"
+            for x in $dependencies; do 
+                if [ -z "$(dpkg -l | grep $x | tr -d '[[:space:]]')" ]; then
+                    sudo apt-get --assume-yes install $x &> /dev/null
+                    echo "installed dependency $x."
+                fi
+            done
+            echo -e "\n### ! INSTALLED DEPENDENCIES ! ###"
+        fi
 
+
+## FUNCTIONS
+
+    # HELP
+        function help {
+            echo "Usage: OTS [OPTION]... [VALUE]...
+    Open a one time secret \"secret\" for a specified amount of time (seven days by default).
+
+    -h 		displays this help.
+
+    -u 		uses a template for creating a secret for a user,
+                while using only OTS -u the template is loaded empty but
+                while using OTS -u [USER] [PASSWORD] the template
+                is loaded with the values in there just for you to save."
+        }
+
+        function get_message {
+            TMP_file=".tmp_$(openssl rand -base64 12)_OTS_file"
+            echo "$VIM_Preset" >> $TMP_file
+            vi "+2" "+startinsert" $TMP_file
+            SECRETmessage=$(cat $TMP_file | tail -n +2 | head -n -1)
+            rm -rf $TMP_file
+        }
+
+        function user {
+            export USER_name="$1"
+            export USER_name="$2"
+            VIM_Preset="### - WRITE YOUR SECRET HERE - ###
+USER: $1
+
+PASSWORD: $2
 ### - WRITE YOUR SECRET HERE - ###"
 
-# Template
-if [ "$1" == "-u" ] || [ "$1" == "--user" ]; then
-	if [ ! -z "$2" ] && [ ! -z "$3" ]; then
-	Preset="### - WRITE YOUR SECRET HERE - ###
-USER: $2
+            get_message
+        }
 
-PASSWORD: $3
+## GET OPTIONS
+    while getopts ":hu" opt; do
+        case "$opt" in
+            h)
+                help
+                exit 0
+                ;;
+            u)
+                user $2 $3
+                preset_ussage="user"
+                ;;
+            \?)
+                echo "Invalid option: -$OPTARG"
+                help
+                exit 1
+                ;;
+        esac
+    done
+
+## START SCRIPT
+
+    # DEFINE DEFULT PRESET
+        if [ -z "$preset_ussage" ]; then
+            VIM_Preset="### - WRITE YOUR SECRET HERE - ###
+
 ### - WRITE YOUR SECRET HERE - ###"
-	else
-	Preset="### - WRITE YOUR SECRET HERE - ###
-USER:
+        fi
 
-PASSWORD:
-### - WRITE YOUR SECRET HERE - ###"
-	fi
-fi
+    # VERIFY SECRET
+        while [ -z "$SECRETmessage" ];
+        do
+            rm -rf .tmp_OTS_file
+            get_message
+        done
 
-# REMOTE MODE
-if [ "$1" == "-R" ] || [ "$1" == "--remote-use" ];then
-# Get secret
+    # GET TTD
+        read -p "Lifetime of the secret in days: " TIMEtoREMOVE
 
-function get_message {
-echo "Enter your message below. Type a single '~' on a line by itself to finish."
-SECRETmessage=""
-while IFS= read -r line; do
-    if [ "$line" = "~" ]; then
-        break
-    fi
-    SECRETmessage="$SECRETmessage$line\n"
-done
-}
+    # CHECK FOR EMPTY RESPONS
+        if [ -z "$TIMEtoREMOVE" ]; then
+            TIMEtoREMOVE="604800"
+            echo "Did not get a Lifetime for the secret time set to a week."
+        fi
 
-get_message
-
-while [ -z "$SECRETmessage" ];
-do
-        get_message
-done
-
-SECRETmessage="$(echo -e "$SECRETmessage")"
-else
-# PC mode
-
-# Get secret
-function get_message_PC {
-echo "$Preset" >> .tmp_OTS_file
-vi "+2" "+startinsert" .tmp_OTS_file
-SECRETmessage=$(cat .tmp_OTS_file | tail -n +2 | head -n -1)
-}
-
-get_message_PC
-
-while [ -z "$SECRETmessage" ];
-do
-	rm -rf .tmp_OTS_file
-	get_message_PC
-done
-
-rm -rf .tmp_OTS_file
-fi
-
-# Get TTL
-read -p "Lifetime of the secret in days: " TIMEtoREMOVE
-
-# translate to seconds
-if [ ! -z "$TIMEtoREMOVE" ]; then
-	TIMEtoREMOVE=$(( $TIMEtoREMOVE * 24 * 60 * 60  ))
-fi
-
-# set defult
-while [ -z "$TIMEtoREMOVE" ];
-do
-        TIMEtoREMOVE="604800"
-	echo "Did not get a Lifetime for the secret time set to a week."
-done
-
-echo "-
-Link: https://onetimesecret.com/secret/$(curl -s -d "secret=$SECRETmessage&ttl=$TIMEtoREMOVE" -u 'nnoam.alum@gmail.com:822fa6c154d04b8f9660b6269b2d25b639775bf7' https://onetimesecret.com/api/v1/share | awk -F '"secret_key":"' {'print $2'} | awk -F '"' {'print $1'})
+    # send an API request
+        secretLINK=$(echo "https://onetimesecret.com/secret/$(curl -s -d "secret=$SECRETmessage&ttl=$TIMEtoREMOVE" -u 'nnoam.alum@gmail.com:822fa6c154d04b8f9660b6269b2d25b639775bf7' https://onetimesecret.com/api/v1/share | awk -F '"secret_key":"' {'print $2'} | awk -F '"' {'print $1'})")
+        echo "-
+    Link (copied to clipboard): $secretLINK
 -"
+        echo "$secretLINK" | xsel -b
