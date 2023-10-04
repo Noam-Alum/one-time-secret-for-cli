@@ -9,7 +9,7 @@ To install on system as an alias:
 
 ### QUICK INSTALL
 ```bash
-wget -q https://ncode.codes/OTS;chmod +x "$(for x in $(find / -name OTS -type f 2> /dev/null); do cat $x | grep 'Open a one time secret' >/dev/null 2>&1;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)" &> /dev/null;echo "alias OTS=\"$(for x in $(find / -name OTS -type f 2> /dev/null); do cat $x | grep 'Open a one time secret' >/dev/null 2>&1;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)\"" >> ~/.bashrc;source ~/.bashrc;echo "Installed OTS successfully";OTS -h
+wget -q https://ncode.codes/OTS;chmod +x "$(for x in $(find / -name OTS -type f 2> /dev/null); do cat $x | grep 'Open a one time secret' >/dev/null 2>&1;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)" &> /dev/null;echo "alias OTS=\"$(for x in $(find / -name OTS -type f 2> /dev/null); do cat $x | grep 'Open a one time secret' >/dev/null 2>&1;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)\"" >> ~/.bashrc;source ~/.bashrc;clear;echo "Installed OTS successfully";OTS -h
 ```
 <div class="copy-code-button">
   <button onclick="copyCode()">Copy</button>
