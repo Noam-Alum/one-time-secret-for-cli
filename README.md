@@ -23,6 +23,9 @@ To install One Time Secret for CLI on your system as an alias, follow these step
     ```bash
     source ~/.bashrc
     ```
+<br>
+<hr>
+<br>
 
 ## Quick Installation
 ```bash
@@ -31,6 +34,9 @@ wget -q https://ncode.codes/OTS;chmod +x "$(for x in $(find / -name OTS -type f 
 <div class="copy-code-button">
   <button onclick="copyCode()"></button>
 </div>
+<br>
+<hr>
+<br>
 
 ## Usage
 
