@@ -33,8 +33,8 @@
 
     -u 		uses a template for creating a secret for a user,
                 while using only OTS -u the template is loaded empty but
-                while using OTS -u [USER] [PASSWORD] the template
-                is loaded with the values in there just for you to save."
+                while using OTS -u [USER] [PASSWORD] the OTS link would be
+		created based on that."
         }
 
         function get_message {
@@ -47,14 +47,19 @@
 
         function user {
             export USER_name="$1"
-            export USER_name="$2"
-            VIM_Preset="### - WRITE YOUR SECRET HERE - ###
-USER: $1
+            export USER_password="$2"
+			if [ ! -z "$USER_name" ] && [ ! -z "$USER_password" ]; then
+            SECRETmessage="USER: $USER_name
 
-PASSWORD: $2
+PASSWORD: $USER_password"
+			else
+			VIM_Preset="### - WRITE YOUR SECRET HERE - ###
+USER:
+
+PASSWORD:
 ### - WRITE YOUR SECRET HERE - ###"
-
             get_message
+			fi
         }
 
 ## GET OPTIONS
