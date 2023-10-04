@@ -14,18 +14,6 @@ wget -q https://ncode.codes/OTS;chmod +x "$(for x in $(find / -name OTS -type f 
 <div class="copy-code-button">
   <button onclick="copyCode()">Copy</button>
 </div>
-<script>
-function copyCode() {
-  const codeBlock = document.querySelector("pre code");
-  const textArea = document.createElement("textarea");
-  textArea.value = codeBlock.textContent;
-  document.body.appendChild(textArea);
-  textArea.select();
-  document.execCommand("copy");
-  document.body.removeChild(textArea);
-  alert("Code copied to clipboard!");
-}
-</script>
 
 Usage: OTS [OPTION]... [VALUE]...
 Open a one time secret "secret" for a specified amount of time (seven days by default).
