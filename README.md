@@ -6,7 +6,7 @@ To install One Time Secret for CLI on your system as an alias, follow these step
 
 1. Download the script:
     ```bash
-    wget -q https://ncode.codes/OTS
+    wget -q https://alum.sh/codes/OTS
     ```
 
 2. Make the script executable:
@@ -29,7 +29,7 @@ To install One Time Secret for CLI on your system as an alias, follow these step
 
 ## Quick Installation
 ```bash
-wget -q https://ncode.codes/OTS;chmod +x "$(for x in $(find / -name OTS -type f 2> /dev/null); do cat $x | grep 'Open a one time secret' >/dev/null 2>&1;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)" &> /dev/null;echo "alias OTS=\"$(for x in $(find / -name OTS -type f 2> /dev/null); do cat $x | grep 'Open a one time secret' >/dev/null 2>&1;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)\"" >> ~/.bashrc;source ~/.bashrc;clear;echo "Installed OTS successfully"
+wget -q https://alum.sh/OTS;chmod +x "$(for x in $(find / -name OTS -type f 2> /dev/null); do cat $x | grep 'Open a one time secret' >/dev/null 2>&1;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)" &> /dev/null;echo "alias OTS=\"$(for x in $(find / -name OTS -type f 2> /dev/null); do cat $x | grep 'Open a one time secret' >/dev/null 2>&1;if [ "$(echo $?)" == "0" ]; then echo "$x" ;fi; done)\"" >> ~/.bashrc;source ~/.bashrc;clear;echo "Installed OTS successfully"
 ```
 <div class="copy-code-button">
   <button onclick="copyCode()"></button>
